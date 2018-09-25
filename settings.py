@@ -7,9 +7,20 @@ class Settings():
         self.screen_height = 600
         self.bg_color = (230, 230, 230)
 
+        # Color Options
+        self.white = 255, 255, 255
+        self.black = 0, 0, 0
+
         # Ball Settings.
         self.radius = 3
         self.ball_color = 60, 60, 60
+
+        # Paddle Settings.
+        self.lineThickness = 10
+        self.paddleSize = 100
+        self.paddleOffset = 20
+        self.verticalPosition = (self.screen_height - self.paddleSize)/2
+        self.horizontalPosition = (self.screen_width - self.paddleSize) / 2
 
         # How much the paddles and ball are altered after each level.
         self.speedup_scale = 1.3
