@@ -30,16 +30,12 @@ def run_game():
     # # Make a ball and the four paddles
     # ball = Ball()
 
-    leftPaddle = pygame.Rect(pong_settings.paddleOffset, pong_settings.verticalPosition, pong_settings.lineThickness, pong_settings.paddleSize)
-    rightPaddle = pygame.Rect(pong_settings.screen_width - pong_settings.paddleOffset - pong_settings.lineThickness, pong_settings.verticalPosition, pong_settings.lineThickness, pong_settings.paddleSize)
-    topPaddle = pygame.Rect(pong_settings.horizontalPosition, pong_settings.paddleOffset, pong_settings.paddleSize, pong_settings.lineThickness)
-    bottomPaddle = pygame.Rect(pong_settings.horizontalPosition, pong_settings.screen_height - pong_settings.paddleOffset - pong_settings.lineThickness, pong_settings.paddleSize, pong_settings.lineThickness)
+    paddles = Group()
+    paddles.add(gf.create_paddles(pong_settings))
 
     while True:
-        pygame.draw.rect(screen, pong_settings.white, leftPaddle)
-        pygame.draw.rect(screen, pong_settings.white, rightPaddle)
-        pygame.draw.rect(screen, pong_settings.white, topPaddle)
-        pygame.draw.rect(screen, pong_settings.white, bottomPaddle)
+        for paddle in paddles:
+            pygame.draw.rect(screen, pong_settings.white, paddle.location)
 
         pygame.display.update()
 
