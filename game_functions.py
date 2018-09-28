@@ -1,7 +1,6 @@
 import pygame
 from pygame.sprite import Group
 import sys
-from time import sleep
 
 from ball import Ball
 from paddle import Paddle
@@ -29,11 +28,13 @@ def create_paddles(settings, screen, player_paddles, ai_paddles):
     ai_paddles.add(aiBottomPaddle)
 
 
-def create_ball():
-    print("Hello")
+def create_center_line(settings, screen):
+    firstPos = (settings.screen_width / 2, 0)
+    newPos = (settings.screen_width / 2, settings.screen_height)
+    pygame.draw.line(screen, settings.white, firstPos, newPos)
 
 
-def check_keydown_events(event, paddles):
+def check_keydown_events(paddles):
     keys = pygame.key.get_pressed()
     for paddle in paddles:
         if keys[pygame.K_UP] and paddle.wall == "left" and paddle.user == "player":
@@ -73,14 +74,21 @@ def check_events(settings, screen, paddles):
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, paddles)
         elif event.type == pygame.KEYDOWN:
-            check_keydown_events(event, paddles)
+            check_keydown_events(paddles)
+
+
+def check_paddle_collisions(paddles):
+    for paddle in paddles:
+        if paddle.colliderect():
+            if paddle.wall == "top" or paddle.wall == "bottom":
+                paddle.moving_left = False
+                paddle.moving_right = False
+            elif paddle.wall == "left":
+                paddle.moving_up = False
+                paddle.moving_down = False
 
 
 def check_play_button():
-    print("Hello")
-
-
-def update_screen():
     print("Hello")
 
 
@@ -90,3 +98,22 @@ def check_ball_paddle_collisions():
 
 def ball_hit():
     print("Hello")
+
+
+def update_screen(settings, screen, ball, paddles):
+    # Redraw the screen during each pass through the loop
+    screen.fill(settings.black)
+
+    # Draw the center line
+    create_center_line(settings, screen)
+
+    # Update the position of the ball
+    pygame.draw.rect(screen, settings.white, ball.location)
+    ball.update()
+
+    for paddle in paddles:
+        pygame.draw.rect(screen, settings.white, paddle.location)
+        paddle.update()
+
+    # Make the most recently drawn screen visible
+    pygame.display.update()
