@@ -6,47 +6,52 @@ from pygame.sprite import Group
 from settings import Settings
 # from game_stats import GameStats
 # from scoreboard import Scoreboard
-# from ball import Ball
-from paddle import Paddle
+from ball import Ball
+# from paddle import Paddle
 # from button import Button
 import game_functions as gf
+
 
 def run_game():
     # Initialize the game and create a screen object
     pygame.init()
 
+    # Initialize the Settings for the game
     pong_settings = Settings()
 
+    # Create the screen and set the caption
     screen = pygame.display.set_mode((pong_settings.screen_width, pong_settings.screen_height))
     pygame.display.set_caption("Pong")
 
-    # # Make the Play Button
-    # play_button = Button(pong_settings, screen, "Play game")
-    #
-    # # Create an instance to store game statistics and create a scoreboard.
-    # stats = GameStats(pong_settings)
-    # sb = Scoreboard(pong_settings, screen, stats)
-    #
-    # # Make a ball and the four paddles
-    # ball = Ball()
+    # # Make the ball and paddles
+    # ball = pygame.draw.circle(screen, pong_settings.white, pong_settings.position, pong_settings.radius, pong_settings.width)
 
     paddles = Group()
-    paddles.add(gf.create_paddles(pong_settings))
+
+    player_paddles = Group()
+    ai_paddles = Group()
+
+    gf.create_paddles(pong_settings, screen, player_paddles, ai_paddles)
+
+    paddles.add(player_paddles)
+    paddles.add(ai_paddles)
 
     while True:
+        screen.fill(pong_settings.black)
+        gf.check_events(pong_settings, screen, paddles)
+
+        pygame.key.set_mods(pygame.KMOD_LSHIFT)
+
         for paddle in paddles:
             pygame.draw.rect(screen, pong_settings.white, paddle.location)
+            paddle.update()
 
-        pygame.display.update()
+        # ball
 
-# # Start the main loop for the game
-    # while True:
-    #     # Watch for keyboard and mouse events.
-    #     gf.check_events()
-    #
-    #     if stats.game_active:
-    #         gf.update_paddles()
-    #         gf.update_ball()
+        # pygame.draw.line(screen, pong_settings.white, (pong_settings.screen_width/2, 0), (pong_settings.screen_width/2, pong_settings.screen_height))
+
+        pygame.display.flip()
+
 
 if __name__ == "__main__":
     run_game()
