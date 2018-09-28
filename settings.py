@@ -1,4 +1,4 @@
-class Settings():
+class Settings:
     """A class to store all settings for Alien invasion."""
 
     def __init__(self):
@@ -11,16 +11,17 @@ class Settings():
         self.white = 255, 255, 255
         self.black = 0, 0, 0
 
-        # Ball Settings.
-        self.radius = 3
-        self.ball_color = 60, 60, 60
-
         # Paddle Settings.
         self.lineThickness = 10
-        self.paddleSize = 100
+        self.paddleSize = 200
         self.paddleOffset = 20
         self.verticalPosition = (self.screen_height - self.paddleSize)/2
-        self.horizontalPosition = (self.screen_width - self.paddleSize) / 2
+        self.horizontalPosition = self.screen_width/2
+
+        # Ball Settings.
+        self.position = (int(self.screen_width/2 - self.lineThickness/2), int(self.screen_height/2 - self.lineThickness/2))
+        self.radius = 5
+        self.width = 0
 
         # How much the paddles and ball are altered after each level.
         self.speedup_scale = 1.3
