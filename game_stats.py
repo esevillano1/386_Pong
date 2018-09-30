@@ -1,4 +1,4 @@
-class GameStats:
+class GameStats():
     def __init__(self, settings):
         """Initialize statistics."""
         self.settings = settings
@@ -13,5 +13,4 @@ class GameStats:
     def reset_stats(self):
         """Initialize statistics that can be changed throughout the game."""
         self.player_score = 0
-        self.computer_score = 0
-        self.level = 1
+        self.ai_score = 0

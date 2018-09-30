@@ -1,6 +1,5 @@
 import pygame
 from pygame.sprite import Sprite
-from random import seed, random
 
 
 class Ball(Sprite):
@@ -14,7 +13,9 @@ class Ball(Sprite):
         self.x = self.settings.horizontalPosition
         self.y = self.settings.screen_height/2
         self.location = pygame.Rect(self.x, self.y, self.radius, self.radius)
+        self.xdir = 1
+        self.ydir = 1
 
     def update(self):
-        if self.location.x > 0:
-            self.location.x -= self.settings.ball_speed
+        self.location.x += (self.settings.ball_speed_x * self.xdir)
+        self.location.y += (self.settings.ball_speed_y * self.ydir)

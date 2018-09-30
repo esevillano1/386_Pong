@@ -1,10 +1,9 @@
 import pygame.font
-from pygame.sprite import Group
 
-from paddle import Paddle
 
 class Scoreboard():
     """A class to report scoring information."""
+
     def __init__(self, settings, screen, stats):
         """Initialize scorekeeping attributes."""
         self.screen = screen
@@ -13,55 +12,34 @@ class Scoreboard():
         self.stats = stats
 
         # Font settings for scoring information.
-        self.text_color = (30, 30, 30)
-        self.font = pygame.font.SysFont(None, 48)
+        self.text_color = (255, 255, 255)
+        self.font_size = 32
+        self.font = pygame.font.SysFont(None, self.font_size)
 
         # Prepare the initial score images.
-        self.prep_score('player1')
-        self.prep_score('player2')
-        self.prep_high_score()
-        self.prep_level()
+        self.prep_score()
 
-    def prep_score(self, user):
+    def prep_score(self):
         """Turn the score into a rendered image."""
-        rounded_score = int(round(self.stats.score, -1))
-        score_str = "{:,}".format(rounded_score)
-        self.score_image = self.font.render(score_str, True, self.text_color, self.settings.bg_color)
+        player_rounded_score = int(self.stats.player_score)
+        player_score_str = "{:,}".format(player_rounded_score)
+        self.player_score_image = self.font.render(player_score_str, True, self.text_color, self.settings.bg_color)
+
+        ai_rounded_score = int(self.stats.ai_score)
+        ai_score_str = "{:,}".format(ai_rounded_score)
+        self.ai_score_image = self.font.render(ai_score_str, True, self.text_color, self.settings.bg_color)
 
         # Align the score in the appropriate location
-        self.score_rect = self.score_image.get_rect()
-        self.score_rect.top = 20
-        if user == 'player1':
-            self.score_rect.midtop = self.screen_rect.midtop - 10
-        elif user == 'player2':
-            self.score_rect.midtop = self.screen_rect.midtop + 10
+        self.player_score_rect = self.player_score_image.get_rect()
+        self.player_score_rect.top = self.settings.screen_height/8
 
-    def prep_high_score(self):
-        """Turn the high score into a rendered image."""
-        """Turn the score into a rendered image."""
-        high_score = int(round(self.stats.score, -1))
-        high_score_str = "{:,}".format(high_score)
-        self.high_score_image = self.font.render(high_score_str, True, self.text_color, self.settings.bg_color)
+        self.ai_score_rect = self.player_score_image.get_rect()
+        self.ai_score_rect.top = self.settings.screen_height / 8
 
-        # Center the high score at the top of the screen
-        self.high_score_rect = self.high_score_image.get_rect()
-        self.high_score_rect.centerx = self.screen_rect.centerx
-        self.high_score_rect.top = self.high_score_rect.top
+        self.player_score_rect.centerx = self.settings.screen_width/6
+        self.ai_score_rect.centerx = self.settings.screen_width/1.3
 
     def show_score(self):
         """Draw scores and paddles to the screen."""
-        self.screen.blit(self.score_image, self.score_rect)
-        self.screen.blit(self.high_score_image, self.high_score_rect)
-        self.screen.blit(self.level_image, self.level_rect)
-
-        # Draw paddles.
-        self.paddles.draw(self.screen)
-
-    def prep_level(self):
-        """Turn the level into a rendered image."""
-        self.level_image = self.font.render(str(stats.level), True, self.text_color, self.settings.bg_color)
-
-        # Position the level below the score.
-        self.level_rect = self.level_image.get_rect()
-        self.level_rect.right = self.score_rect.right
-        self.level_rect.top = self.score_rect.bottom + 10
+        self.screen.blit(self.player_score_image, self.player_score_rect)
+        self.screen.blit(self.ai_score_image, self.ai_score_rect)
